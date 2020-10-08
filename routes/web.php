@@ -28,5 +28,7 @@ Route::any('/delete','Admin\UserController@delete');
 
 
 Route::any('/create','Admin\PuserController@create');
+Route::any('/login','Admin\PuserController@login');
 Route::post('/save','Admin\PuserController@save');
 Route::any('PuserController/index','Admin\PuserController@index');
+Route::post('/logindo','Admin\PuserController@logindo');
