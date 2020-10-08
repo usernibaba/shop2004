@@ -1,107 +1,49 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\model\Admin\User as userModel;
-use Illuminate\Support\Facades\DB;
+
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-        $res=userModel::all();
-//        dd($res);
-        return view('admin/admin/index',['res'=>$res]);
+    public  function  create(){
+        return  view('admin/admin/create');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-        return view('admin/admin/create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public  function store(Request $request){
         $data=$request->except('_token');
+//        dd($data);
+        $data['reg_time']=time();
+//        dd($data);
         $res=userModel::insert($data);
 //        dd($res);
         if($res){
-            return redirect('UserController/index');
+            return redirect('admin/index');
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public  function  index(){
+        $res=userModel::limit(10)->get();
+//        dd($res);
+        return view('admin/admin/index',['res'=>$res]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public  function delete($user_id){
+        $res=userModel::where('user_id',$user_id)->delete();
+        if($res){
+            return redirect('admin/index');
+        }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public  function  edit($user_id){
+        $res=userModel::where('user_id',$user_id)->first();
+        return view('admin/admin/edit',['res'=>$res]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-    public  function  delete(){
-//        $users = DB::table('users')->get();
-//        $users = DB::table('users')->count();
-//        $users=DB::table('users')->select('admin_name');
-//        $users=DB::table('users')->pluck('admin_pwd','admin_name');
-//        $users=DB::select('select * from users where id = ?',[2]);
-//        $users = DB::table('users')->find(3);
-
-        dd($users);
-
+    public  function  update(Request $request,$user_id){
+        $data=$request->except('_token');
+        $data['reg_time']=time();
+        $res=userModel::where('user_id',$user_id)->update($data);
+//        dd($res);
+        if($res){
+            return redirect('admin/index');
+        }
     }
 }
