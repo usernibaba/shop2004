@@ -19,16 +19,19 @@ Route::get('/', function () {
 Route::get('/test', function () {
     echo date('Y-m-d H:i:s');
 });
+Route::prefix('admin')->group(function(){
 
-Route::get('/index','GoodsController@index');
-Route::any('/create','Admin\UserController@create');
-Route::post('/store','Admin\UserController@store');
-Route::any('UserController/index','Admin\UserController@index');
-Route::any('/delete','Admin\UserController@delete');
+        Route::get('/index','GoodsController@index');
+        Route::any('/create','Admin\UserController@create');
+        Route::post('/store','Admin\UserController@store');
+        Route::any('/index','Admin\UserController@index');
+        Route::any('/delete','Admin\UserController@delete');
+});
+Route::prefix('user')->group(function (){
 
-
-Route::any('/create','Admin\PuserController@create');
-Route::any('/login','Admin\PuserController@login');
-Route::post('/save','Admin\PuserController@save');
-Route::any('PuserController/index','Admin\PuserController@index');
-Route::post('/logindo','Admin\PuserController@logindo');
+        Route::any('/create','Admin\PuserController@create');
+        Route::any('/login','Admin\PuserController@login');
+        Route::post('/save','Admin\PuserController@save');
+        Route::any('/index','Admin\PuserController@index');
+        Route::post('/logindo','Admin\PuserController@logindo');
+});
